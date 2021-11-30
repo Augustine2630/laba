@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace zoo.console_v2
 {
-    
     internal class Program
     {
         static void Main(string[] args)
@@ -12,16 +11,13 @@ namespace zoo.console_v2
             int input = 0;
             int input2 = 0;
             int input3 = 0;
+            int input4 = 0;
             string info = "";
-            string data = "";
-            int j;
-
-
+            int data = 0;
 
             /*List<string[]> zoo = new List<string[]>();  */             //простейший список однотипных объектов
-                                                                         //Dictionary<string, string> zoo = new Dictionary<string, string>();
-            List<string> zoo = new List<string>();
-            List<string> zoo2 = new List<string>();
+            Dictionary<int, string> zoo = new Dictionary<int, string>();
+
 
             Menu();
             input = Convert.ToInt32(Console.ReadLine());
@@ -42,7 +38,7 @@ namespace zoo.console_v2
                 switch (input)
                 {
                     case 0:
-                        string[] s = { "Зоопарки города", "Подать заявку", "Заявки", "Назад" };    //zoo 
+                        string[] s = { "Зоопарки города", "Подать заявку", "Заявки","Удалить заявку", "Назад" };    //zoo 
                         for (int i = 0; i < s.Length; i++)
                             Console.WriteLine("{0}. {1}", i, s[i]);
                         Menu_Zoo();
@@ -83,8 +79,11 @@ namespace zoo.console_v2
 
                             Zoo_info1();
                             break;
-                        case 3:
+                        case 4:
                             Menu();
+                            break;
+                        case 3:
+                            deleting();
                             break;
                         default:
                             Console.WriteLine("Ошибка ввода");
@@ -118,17 +117,17 @@ namespace zoo.console_v2
                 Console.Write("Введите наименование услуги:  ");
                 string info = Convert.ToString(Console.ReadLine());
                 Console.Write("На какую дату текущего месяца?  ");
-                string data = Convert.ToString(Console.ReadLine());
-
-                zoo.Add(info);
-                zoo2.Add(data);
-                //string[] keys = new string[zoo.Keys.Count];
-                //zoo.Keys.CopyTo(keys, 0);
-                 
-                if (zoo.Count > 0) { Console.Write("Услуга записана.Перейдите в список услуг"); }
-                else Console.WriteLine("Вы не выбрали услугу");
+                data = Convert.ToInt32(Console.ReadLine());
                 
-                Console.ReadKey();
+                zoo.Add(data, info);
+                foreach (KeyValuePair<int, string> keyValue in zoo)
+                {
+                    Console.WriteLine(keyValue.Key + keyValue.Value);
+                }
+
+                //if (zoo.Keys.Count > 0) Console.Write("Услуга записана.Перейдите в список услуг");
+               // else Console.WriteLine("Вы не выбрали услугу");
+                //Console.ReadKey();
                 Menu();
 
             }
@@ -140,23 +139,14 @@ namespace zoo.console_v2
                 Console.WriteLine("------------------Заявки---------------------");                 //список добавленных заявок
                 Console.ResetColor();
 
-                /*zoo.Add(info, data);
-                string[] keys = new string[zoo.Keys.Count];
-                zoo.Keys.CopyTo(keys, 0);*/
 
-                if (zoo.Count > 0)
+
+                foreach (KeyValuePair<int, string> keyValue in zoo)
                 {
-                    Console.Write("Вы записаны на услуги: ");
-                    for (int j = 0; j < zoo.Count; j++)
-                    {
-                        var s = zoo[j];
-                        var z = zoo2[j];
-                        Console.Write("\n " + s + ", дата: " + z + ".");
-                    }
-          
+                    Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
                 }
-                else Console.WriteLine("Вы не выбрали услугу");
-                Console.WriteLine("\nДля выхода в меню нажмите любую клавишу");
+                
+                Console.WriteLine("Для выхода в меню нажмите любую клавишу");
                 Console.ReadKey();
                 Menu();
 
@@ -164,8 +154,36 @@ namespace zoo.console_v2
 
 
 
+            void deleting()
+            {
+                Console.Clear();
+
+                foreach (KeyValuePair<int, string> keyValue in zoo)
+                    {
+                        Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
+                    }
+
+                Console.WriteLine("Введите дату удалемой услуги: ");
+                
+                
+                input4 = Convert.ToInt32(Console.ReadLine());
+                
+                try
+                {
+                    zoo.Remove(data);   
+                }
+                catch
+                {
+                    Console.WriteLine("Ne");
+                }
+                Menu();
+            }
+
+
+
             void Zoo()                                //Список зоопарков Москвы
             {
+               
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n  ---------------------Зоопарки Москвы и московской обл.----------------------------------" +
@@ -203,4 +221,3 @@ namespace zoo.console_v2
 
     }
 }
-
