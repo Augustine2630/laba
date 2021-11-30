@@ -12,8 +12,10 @@ namespace zoo.console_v2
             int input2 = 0;
             int input3 = 0;
             int input4 = 0;
+            int input5 = 0;
             string info = "";
             int data = 0;
+            int EmptyCount = 0;
 
             /*List<string[]> zoo = new List<string[]>();  */             //простейший список однотипных объектов
             Dictionary<int, string> zoo = new Dictionary<int, string>();
@@ -38,7 +40,7 @@ namespace zoo.console_v2
                 switch (input)
                 {
                     case 0:
-                        string[] s = { "Зоопарки города", "Подать заявку", "Заявки","Удалить заявку", "Назад" };    //zoo 
+                        string[] s = { "Зоопарки города", "Подать заявку", "Заявки", "Удалить заявку", "Изменить заявку", "Назад" };    //zoo 
                         for (int i = 0; i < s.Length; i++)
                             Console.WriteLine("{0}. {1}", i, s[i]);
                         Menu_Zoo();
@@ -79,11 +81,14 @@ namespace zoo.console_v2
 
                             Zoo_info1();
                             break;
-                        case 4:
+                        case 5:
                             Menu();
                             break;
                         case 3:
                             deleting();
+                            break;
+                        case 4:
+                            re();
                             break;
                         default:
                             Console.WriteLine("Ошибка ввода");
@@ -116,9 +121,26 @@ namespace zoo.console_v2
                 Console.Clear();
                 Console.Write("Введите наименование услуги:  ");
                 string info = Convert.ToString(Console.ReadLine());
+
                 Console.Write("На какую дату текущего месяца?  ");
-                data = Convert.ToInt32(Console.ReadLine());
+                try
+                {
+                    data = Convert.ToInt32(Console.ReadLine());
+                    if (data > 31) {
+                        Console.Write("Неверный формат даты.");
+                        Console.ReadLine();
+                        Console.Write("На какую дату текущего месяца?  ");
+                        data = Convert.ToInt32(Console.ReadLine());
+                    }
+                } catch
+                {
+                    Console.Write("Неверный формат даты.");
+                    Console.ReadLine();
+                    Console.Write("На какую дату текущего месяца?  ");
+                    data = Convert.ToInt32(Console.ReadLine());
+                }
                 
+
                 zoo.Add(data, info);
                 foreach (KeyValuePair<int, string> keyValue in zoo)
                 {
@@ -126,7 +148,7 @@ namespace zoo.console_v2
                 }
 
                 //if (zoo.Keys.Count > 0) Console.Write("Услуга записана.Перейдите в список услуг");
-               // else Console.WriteLine("Вы не выбрали услугу");
+                // else Console.WriteLine("Вы не выбрали услугу");
                 //Console.ReadKey();
                 Menu();
 
@@ -145,36 +167,117 @@ namespace zoo.console_v2
                 {
                     Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
                 }
-                
+
                 Console.WriteLine("Для выхода в меню нажмите любую клавишу");
                 Console.ReadKey();
                 Menu();
 
             }
 
+            void re()
+            {
+                Console.Clear();
+                foreach (KeyValuePair<int, string> keyValue in zoo)
+                {
+                    Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
+                }
 
+                if (EmptyCount == zoo.Count())
+                {
+                    Console.WriteLine("Список заявок пуст. ");
+                    Console.ReadLine();
+                    Menu();
+                }
+
+                Console.WriteLine("Введите дату желаемой услуги для изменения данных: ");
+
+                try
+                {
+                    data = Convert.ToInt32(Console.ReadLine());
+                    if (data > 31)
+                    {
+                        Console.Write("Неверный формат даты.");
+                        Console.ReadLine();
+                        Console.Write("На какую дату текущего месяца?  ");
+                        data = Convert.ToInt32(Console.ReadLine());
+                    }
+                }
+                catch
+                {
+                    Console.Write("Неверный формат даты.");
+                    Console.ReadLine();
+                    Console.Write("Введите корректный формат даты.  ");
+                    data = Convert.ToInt32(Console.ReadLine());
+                }
+
+                try
+                {
+                    zoo.Remove(data);
+
+                }
+                catch
+                {
+                    Console.WriteLine("Такой даты не существует. ");
+                }
+
+                Console.WriteLine("Введите новое название услуги: ");
+                string info = Convert.ToString(Console.ReadLine());
+                Console.WriteLine("Введите новую дату: ");
+                data = Convert.ToInt32(Console.ReadLine());
+
+                zoo.Add(data, info);
+
+                Console.WriteLine("Новый список заявок: ");
+                foreach (KeyValuePair<int, string> keyValue in zoo)
+                {
+                    Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
+                }
+
+                Menu();
+            }
 
             void deleting()
             {
                 Console.Clear();
 
                 foreach (KeyValuePair<int, string> keyValue in zoo)
-                    {
-                        Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
-                    }
-
+                {
+                    Console.WriteLine("Дата услуги: " + keyValue.Key + " Название услуги: " + keyValue.Value);
+                }
+                if(EmptyCount == zoo.Count()) {
+                    Console.WriteLine("Список заявок пуст. ");
+                    Console.ReadLine();
+                    Menu();
+                }
+                
                 Console.WriteLine("Введите дату удалемой услуги: ");
                 
-                
-                input4 = Convert.ToInt32(Console.ReadLine());
-                
+                try
+                {
+                    data = Convert.ToInt32(Console.ReadLine());
+                    if (data > 31)
+                    {
+                        Console.Write("Неверный формат даты.");
+                        Console.ReadLine();
+                        Console.Write("На какую дату текущего месяца?  ");
+                        data = Convert.ToInt32(Console.ReadLine());
+                    }
+                }
+                catch
+                {
+                    Console.Write("Неверный формат даты.");
+                    Console.ReadLine();
+                    Console.Write("Введите корректный формат даты.  ");
+                    data = Convert.ToInt32(Console.ReadLine());
+                }
+
                 try
                 {
                     zoo.Remove(data);   
                 }
                 catch
                 {
-                    Console.WriteLine("Ne");
+                    Console.WriteLine("Такой даты не существует.");
                 }
                 Menu();
             }
