@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace zoo.console_v2
@@ -14,6 +14,7 @@ namespace zoo.console_v2
             int input3 = 0;
             string info = "";
             string data = "";
+            int j;
 
 
 
@@ -145,12 +146,17 @@ namespace zoo.console_v2
 
                 if (zoo.Count > 0)
                 {
-
-                    zoo.ForEach(Console.WriteLine);
-                    zoo2.ForEach(Console.WriteLine);
+                    Console.Write("Вы записаны на услуги: ");
+                    for (int j = 0; j < zoo.Count; j++)
+                    {
+                        var s = zoo[j];
+                        var z = zoo2[j];
+                        Console.Write("\n " + s + ", дата: " + z + ".");
+                    }
+          
                 }
                 else Console.WriteLine("Вы не выбрали услугу");
-                Console.WriteLine("Для выхода в меню нажмите любую клавишу");
+                Console.WriteLine("\nДля выхода в меню нажмите любую клавишу");
                 Console.ReadKey();
                 Menu();
 
