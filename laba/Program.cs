@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-
 public class MenuSetup
 {
-    
+
     public static void Main(string[] args)
     {
-        
+
         Tabs T = new Tabs();
         Requests rq = new Requests();
         Menu();
-        void Menu() {
+        void Menu()
+        {
             Console.Clear();
             MenuSetup MS = new MenuSetup();
             Console.WriteLine(" 1. Продукты\n 2. Типы программных продуктов\n 3. Выход");
@@ -24,6 +22,8 @@ public class MenuSetup
                     T.tabs2();
                     Menu();
                     break;
+                case 3:
+                    break;
                 default:
                     Menu();
                     break;
@@ -32,12 +32,12 @@ public class MenuSetup
 
         void Menu2()
         {
-            
+
             Console.Clear();
-            Console.WriteLine("  1. Готовые продукты\n 2. Зарегистрировать продукт\n 3. Заявки на регистрацию\n 4. Удалить заявку\n 5. Изменить заявку\n 6. Назад");
-            
+            Console.WriteLine(" 1. Готовые продукты\n 2. Зарегистрировать продукт\n 3. Заявки на регистрацию\n 4. Удалить заявку\n 5. Изменить заявку\n 6. Запись заявок в текстовый файл\n 7. Назад");
+
             int input2 = Convert.ToInt32(Console.ReadLine());
-            
+
             switch (input2)
             {
                 case 1:
@@ -60,7 +60,11 @@ public class MenuSetup
                     rq.re();
                     Menu();
                     break;
+                case 7:
+                    Menu();
+                    break;
                 case 6:
+                    rq.addToTXT();
                     Menu();
                     break;
                 default:
@@ -73,24 +77,32 @@ public class MenuSetup
 
 }
 
+
 public class Requests
 {
     int data;
     int EmptyCount = 0;
 
-    Dictionary<int, string> request = new Dictionary<int, string>();
+    
+    
+    public Dictionary<int, string> request = new Dictionary<int, string>();
+    
+    
+    string path = @"D:\\c#\\req.txt";
+
+    public string Value;
 
     public void addToDict()
     {
-        
+
 
         Console.Clear();
         Console.WriteLine("Введите дату заявки: ");
-        try 
+        try
         {
             data = Convert.ToInt32(Console.ReadLine());
-        } 
-            catch
+        }
+        catch
         {
             Console.WriteLine("неверный формать даты. Попробуйте снова: ");
             data = Convert.ToInt32(Console.ReadLine());
@@ -101,9 +113,9 @@ public class Requests
         try { request.Add(data, info); } catch { }
         //request.Add(data, info);
 
-        foreach(KeyValuePair<int, string> keyValue in request)
+        foreach (KeyValuePair<int, string> keyValue in request)
         {
-            
+
         }
         Console.ReadLine();
 
@@ -184,7 +196,7 @@ public class Requests
             try
             {
                 request.Remove(data);
-                
+
             }
             catch
             {
@@ -213,7 +225,7 @@ public class Requests
             {
                 Console.WriteLine("Список заявок пуст. ");
                 Console.ReadLine();
-                
+
             }
 
             Console.WriteLine("Введите дату продукта для изменения: ");
@@ -253,8 +265,8 @@ public class Requests
             data = Convert.ToInt32(Console.ReadLine());
 
             try { request.Add(data, info); } catch { }
-            
-            
+
+
 
             Console.WriteLine("Новый список заявок: ");
             foreach (KeyValuePair<int, string> keyValue in request)
@@ -262,7 +274,29 @@ public class Requests
                 Console.WriteLine("Дата регистрации: " + keyValue.Key + " Название продукта: " + keyValue.Value);
             }
         }
-     }
+    }
+    public void addToTXT()
+    {
+        if (EmptyCount.Equals(data))
+        {
+            Console.WriteLine("Список заявок пуст");
+            Console.ReadLine();
+            return;
+        } else { 
+            
+            Console.WriteLine("Заявки записаны"); 
+            StreamWriter sw = new StreamWriter(path);
+            string[] valuesDict = new string[request.Count];
+            request.Values.CopyTo(valuesDict, 0);
+            valuesDict.ToList().ForEach(i => sw.WriteLine(i));
+            
+            sw.Close();
+           
+            Console.ReadLine();
+        }
+       
+        
+    }
 }
 public class Tabs
 {
