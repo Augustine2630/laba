@@ -34,7 +34,7 @@ public class MenuSetup
         {
 
             Console.Clear();
-            Console.WriteLine(" 1. Готовые продукты\n 2. Зарегистрировать продукт\n 3. Заявки на регистрацию\n 4. Удалить заявку\n 5. Изменить заявку\n 6. Запись заявок в текстовый файл\n 7. Назад");
+            Console.WriteLine(" 1. Готовые продукты\n 2. Зарегистрировать продукт\n 3. Заявки на регистрацию\n 4. Удалить заявку\n 5. Изменить заявку\n 6. Запись заявок в текстовый файл\n 7. Прочитать из файла\n 8. Назад");
 
             int input2 = Convert.ToInt32(Console.ReadLine());
 
@@ -60,11 +60,15 @@ public class MenuSetup
                     rq.re();
                     Menu();
                     break;
-                case 7:
+                case 8:
                     Menu();
                     break;
                 case 6:
                     rq.addToTXT();
+                    Menu();
+                    break;
+                case 7:
+                    rq.readFromTXT();
                     Menu();
                     break;
                 default:
@@ -296,6 +300,22 @@ public class Requests
         }
        
         
+    }
+
+    public void readFromTXT()
+    {
+        Console.Clear();
+        Console.WriteLine("Заявки в .txt");
+        using (StreamReader sr = new StreamReader(path))
+        {
+            string line;
+            
+            while ((line = sr.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
+        }
+        Console.ReadLine(); 
     }
 }
 public class Tabs
